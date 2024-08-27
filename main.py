@@ -7,8 +7,9 @@ app.version = '1.0'
 
 pokemon_data = [
     {
+        "id": 1,
         "name": "Pikachu",
-        "type": ["Electric"],
+        "type": "Electric",
         "abilities": ["Static", "Lightning Rod"],
         "base_stats": {
             "hp": 35,
@@ -20,8 +21,9 @@ pokemon_data = [
         }
     },
     {
+        "id": 2,
         "name": "Charmander",
-        "type": ["Fire"],
+        "type": "Fire",
         "abilities": ["Blaze", "Solar Power"],
         "base_stats": {
             "hp": 39,
@@ -33,8 +35,9 @@ pokemon_data = [
         }
     },
     {
+        "id": 3,
         "name": "Bulbasaur",
-        "type": ["Grass", "Poison"],
+        "type": "Poison",
         "abilities": ["Overgrow", "Chlorophyll"],
         "base_stats": {
             "hp": 45,
@@ -46,8 +49,9 @@ pokemon_data = [
         }
     },
     {
+        "id": 4,
         "name": "Squirtle",
-        "type": ["Water"],
+        "type": "Water",
         "abilities": ["Torrent", "Rain Dish"],
         "base_stats": {
             "hp": 44,
@@ -59,8 +63,9 @@ pokemon_data = [
         }
     },
     {
+        "id": 5,
         "name": "Eevee",
-        "type": ["Normal"],
+        "type": "Normal",
         "abilities": ["Run Away", "Adaptability", "Anticipation"],
         "base_stats": {
             "hp": 55,
@@ -76,9 +81,65 @@ pokemon_data = [
 
 @app.get('/', tags=['inicio'])
 def message():
+    """
+    GET /
+
+    **Descripción:**
+    Este endpoint devuelve un mensaje de saludo.
+
+    **Respuesta:**
+    - 200 OK: Devuelve el mensaje "hola mundo".
+    """
     return 'hola mundo'
 
 
 @app.get('/pokemons', tags=['pokemons'])
 def get_pokemons():
+    """
+    GET /pokemons
+
+    **Descripción:**
+    Este endpoint devuelve la lista completa de Pokémon.
+
+    **Respuesta:**
+    - 200 OK: Devuelve una lista de objetos JSON que representan a todos los Pokémon.
+    """
     return pokemon_data
+
+
+@app.get('/pokemons/{id}', tags=['pokemons'])
+def get_pokemon_by_id(id: int):
+    """
+    GET /pokemons/{id}
+
+    **Descripción:**
+    Este endpoint devuelve la información de un Pokémon específico basado en su `id`.
+
+    **Parámetros:**
+    - `id` (int): El identificador único del Pokémon.
+
+    **Respuesta:**
+    - 200 OK: Devuelve un objeto JSON con los datos del Pokémon si se encuentra.
+    - 404 Not Found: Devuelve una lista vacía si no se encuentra el Pokémon con el `id` proporcionado.
+    """
+    for pokemon in pokemon_data:
+        if pokemon['id'] == id:
+            return pokemon
+    return []
+
+
+@app.get('/pokemons/', tags=['pokemons'])
+def get_pokemons_by_type(poke_type: str):
+    """
+    GET /pokemons/
+
+    **Descripción:**
+    Este endpoint devuelve una lista de Pokémon que coinciden con el tipo especificado.
+
+    **Parámetros:**
+    - `poke_type` (str): El tipo de Pokémon a filtrar (por ejemplo, "Fire", "Water").
+
+    **Respuesta:**
+    - 200 OK: Devuelve una lista de Pokémon que tienen el tipo especificado.
+    """
+    return [ pokemon for pokemon in pokemon_data if pokemon['type'] == poke_type] 
