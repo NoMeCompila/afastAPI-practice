@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Body
 #from fastapi.responses import HTMLResponse
 
 app = FastAPI()
@@ -78,6 +78,23 @@ pokemon_data = [
     }
 ]
 
+@app.post('/pokemons/create', tags=['pokemons'])
+def create_pokemon(id: int = Body(), 
+                   name: str = Body(), 
+                   type: str = Body(), 
+                   abilities: list = Body(), 
+                   base_stats: dict = Body()):
+    
+    pokemon_data.append({
+        "id": id,
+        "name": name,
+        "type": type,
+        "abilities": abilities,
+        "base_stats": base_stats
+    })
+
+    return pokemon_data
+
 
 @app.get('/', tags=['inicio'])
 def message():
@@ -140,3 +157,5 @@ def get_pokemons_by_type(poke_type: str):
     - 200 OK: Devuelve una lista de Pokémon que tienen el tipo especificado.
     """
     return [ pokemon for pokemon in pokemon_data if pokemon['type'] == poke_type] 
+
+
