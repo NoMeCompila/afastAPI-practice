@@ -122,10 +122,7 @@ def get_pokemon_by_id(id: int):
     - 200 OK: Devuelve un objeto JSON con los datos del Pokémon si se encuentra.
     - 404 Not Found: Devuelve una lista vacía si no se encuentra el Pokémon con el `id` proporcionado.
     """
-    for pokemon in pokemon_data:
-        if pokemon['id'] == id:
-            return pokemon
-    return []
+    return [pokemon for pokemon in pokemon_data if pokemon['id'] == id]
 
 
 @app.get('/pokemons/', tags=['pokemons'])
