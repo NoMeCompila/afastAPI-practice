@@ -78,6 +78,34 @@ pokemon_data = [
     }
 ]
 
+
+
+
+@app.delete('/pokemons/delete/{id}',tags=['pokemons'])
+def delete_pokemon(id: int):
+    for poke in pokemon_data:
+        if poke['id'] == id:
+            pokemon_data.remove(poke)
+    return pokemon_data
+
+
+@app.put('/pokemons/update/')
+def update_pokemon(id: int = Body(), 
+                   name: str = Body(), 
+                   type: str = Body(), 
+                   abilities: list = Body(), 
+                   base_stats: dict = Body()):
+    
+    for poke in pokemon_data:
+        if poke['id'] == id:
+            poke['name'] = name
+            poke['type'] = type
+            poke['abilities'] = abilities
+            poke['base_stats'] = base_stats
+
+            return pokemon_data
+            
+
 @app.post('/pokemons/create', tags=['pokemons'])
 def create_pokemon(id: int = Body(), 
                    name: str = Body(), 
