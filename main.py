@@ -81,8 +81,17 @@ pokemon_data = [
 
 
 
-@app.delete('/pokemons/delete/{id}',tags=['pokemons'])
+@app.delete('/pokemons/delete/{id}', tags=['pokemons'])
 def delete_pokemon(id: int):
+    """
+    Elimina un Pokémon de la base de datos en función de su ID.
+
+    Args:
+        id (int): El ID del Pokémon a eliminar.
+
+    Returns:
+        list: La lista actualizada de Pokémon después de la eliminación.
+    """
     for poke in pokemon_data:
         if poke['id'] == id:
             pokemon_data.remove(poke)
@@ -95,14 +104,25 @@ def update_pokemon(id: int = Body(),
                    type: str = Body(), 
                    abilities: list = Body(), 
                    base_stats: dict = Body()):
-    
+    """
+    Actualiza la información de un Pokémon en la base de datos.
+
+    Args:
+        id (int): El ID del Pokémon a actualizar.
+        name (str): El nuevo nombre del Pokémon.
+        type (str): El nuevo tipo del Pokémon.
+        abilities (list): La nueva lista de habilidades del Pokémon.
+        base_stats (dict): El nuevo conjunto de estadísticas base del Pokémon.
+
+    Returns:
+        list: La lista actualizada de Pokémon después de la modificación.
+    """
     for poke in pokemon_data:
         if poke['id'] == id:
             poke['name'] = name
             poke['type'] = type
             poke['abilities'] = abilities
             poke['base_stats'] = base_stats
-
             return pokemon_data
             
 
@@ -112,7 +132,19 @@ def create_pokemon(id: int = Body(),
                    type: str = Body(), 
                    abilities: list = Body(), 
                    base_stats: dict = Body()):
-    
+    """
+    Crea un nuevo Pokémon y lo agrega a la base de datos.
+
+    Args:
+        id (int): El ID del nuevo Pokémon.
+        name (str): El nombre del nuevo Pokémon.
+        type (str): El tipo del nuevo Pokémon.
+        abilities (list): La lista de habilidades del nuevo Pokémon.
+        base_stats (dict): El conjunto de estadísticas base del nuevo Pokémon.
+
+    Returns:
+        list: La lista actualizada de Pokémon después de la creación.
+    """
     pokemon_data.append({
         "id": id,
         "name": name,
@@ -122,6 +154,7 @@ def create_pokemon(id: int = Body(),
     })
 
     return pokemon_data
+
 
 
 @app.get('/', tags=['inicio'])
