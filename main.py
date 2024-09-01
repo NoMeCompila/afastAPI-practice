@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Body
 from datetime import datetime
 #from fastapi.responses import HTMLResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List, Optional
 
 app = FastAPI()
@@ -81,11 +81,12 @@ pokemon_data = [
     }
 ]
 
+# Validación de tipops de datos
 class Pokemon(BaseModel):
     id : Optional[int] = None
-    name : str
-    type : str
-    abilities : list
+    name : str = Field(max_length=50, default="Pokemon")
+    type : str = Field(max_length=15, default="Normal")
+    abilities : list = Field(min_length=1, default=["tacle"])
     base_stats : dict
 
 @app.delete('/pokemons/delete/{id}', tags=['pokemons'])
@@ -105,6 +106,7 @@ def delete_pokemon(id: int):
     return pokemon_data
 
 
+# Need to fix that
 @app.put('/pokemons/update/{id}', tags=['pokemons'])
 def update_pokemon(id: int, pokemon: Pokemon):
     """
