@@ -321,10 +321,10 @@ def get_minors_patients():
 ###################################### EXERCISE 3 DTO #######################################
 # Definición de los modelos de datos
 class Patient(BaseModel):
-    id: int
-    name: str
-    last_name: str
-    birthdate: str
+    id: int = Field(default=0, le=5000)
+    name: str = Field(default="name", max_length="30")
+    last_name: str = Field(default="name", max_length="30")
+    birthdate: str = Field(default="2024-01-01", )
 
 class Hospital(BaseModel):
     id: int
