@@ -327,18 +327,35 @@ class Patient(BaseModel):
     birthdate: str = Field(default="2024-01-01", )
 
 class Hospital(BaseModel):
-    id: int
-    hospital: str
+    id: int = Field(default=0, le=5000)
+    hospital: str = Field(default="Hospital 1")
 
 class TurnDTO(BaseModel):
-    id: int
-    paciente: str
-    hospital_name: str
+    id: int = Field(default=0, le=5000)
+    paciente: str = Field(default="name", max_length="30")
+    hospital_name: str = Field(default="name", max_length="30")
 
 hospital = [{"id": 1, "hospital": "Garraham"}]
 
 @app.get("/turno", response_model=List[TurnDTO])
 def get_turno():
+    """
+    Este endpoint maneja una solicitud GET a la ruta "/turno" y retorna una lista de objetos de tipo TurnDTO.
+    
+    Funcionalidad:
+    1. Inicializa una lista vacía llamada `turnos` que almacenará los datos procesados.
+    2. Itera sobre los datos de los pacientes en `patients_data`.
+    3. Para cada paciente, busca la información correspondiente en la lista `hospital` utilizando el `id` del paciente.
+    4. Si se encuentra una coincidencia en la lista `hospital`, se crea un objeto `TurnDTO` que contiene:
+        - El `id` del paciente.
+        - El nombre del paciente.
+        - El nombre del hospital asociado.
+    5. El objeto `TurnDTO` se agrega a la lista `turnos`.
+    6. Finalmente, se retorna la lista `turnos`, que contiene los datos del turno en formato DTO.
+    
+    Retorna:
+    - Una lista de objetos `TurnDTO` que contiene la información del turno para cada paciente encontrado.
+    """
     turnos = []
     for patient in patients_data:
         hospital_data = next((h for h in hospital if h["id"] == patient["id"]), None)
